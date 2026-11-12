@@ -1,39 +1,29 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { getProducts } from './src/features/products/productsApi';
+import { Text, View } from 'react-native';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const result = await getProducts(10, 0);
+        console.log('Total products:', result.total);
+        console.log('First product:', result.products[0]);
+      } catch (e) {
+        console.log('API failed:', e);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-
-  return (
-    <View style={styles.container}>
+    <View>
+      <Text>Products App</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
